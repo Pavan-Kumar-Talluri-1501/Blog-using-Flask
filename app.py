@@ -1,20 +1,24 @@
-from flask import Flask
-from flask_cors import CORS
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
-CORS(app)
 
-@app.route("/")
+@app.route('/')
 def index():
-    return "<h1> Hello Puppy! </h1>"
+    return render_template('index.html')
 
-@app.route("/information")
-def info():
-    return "<h1> The puppies are cute </h1>"
+@app.route('/Signup')
+def signup():
+    return render_template('signUpForm.html')
 
-@app.route("/puppy/<name>")
-def puppy(name):
-    return "<h1>The puppy name is {}".format(name.upper())
+@app.route('/thankyou')
+def thanksnote():
+    first = request.args.get('first')
+    last = request.args.get('last')
+    return render_template('thankYou.html', first = first, last = last)
 
-if __name__== "__main__":
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+if __name__ == "__main__":
     app.run(debug=True)
